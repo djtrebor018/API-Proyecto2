@@ -1,7 +1,8 @@
 import { request, response } from "express";
 import { Jwt } from "../helpers/jwt.js";
-import { Usuario } from "../models/user.model.js";
+import { Usuario } from "../models/usuario.model.js";
 import bcrypt from "bcryptjs";
+
 export const Login = async (req = request, res = response) => {
     const { Correo ,Password} = req.body
     try {
@@ -39,10 +40,13 @@ export const Login = async (req = request, res = response) => {
 
 export const Registro =async(req = request , res =response)=>{
     const {Nombre,Correo,Password,Tipo_Usuario,Matricula,Cedula,Rol} = req.body
+  
      const salt =  bcrypt.genSaltSync(8)
         const hashPassword = bcrypt.hashSync(Password,salt)
+          const matriculaFinal = Matricula?.trim() || null;
+          const cedulaFinal = Cedula?.trim() || null;
     try {
-       const newUser = await Usuario.create({ Nombre,Correo,Password:hashPassword,Tipo_Usuario,Matricula,Cedula,Rol})
+       const newUser = await Usuario.create({ Nombre,Correo,Password:hashPassword,Tipo_Usuario,Matricula:matriculaFinal,Cedula:cedulaFinal,Rol})
        const token = Jwt(newUser.ID_Usuario)
        res.status(201).json({ 
             msg:'registro exitoso',

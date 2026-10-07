@@ -18,6 +18,7 @@
     "express": "^4.22.3",
     "express-validator": "^7.3.2",
     "jsonwebtoken": "^9.0.3",
+    "luxon": "^3.7.2",
     "mysql2": "^3.24.4",
     "sequelize": "^6.37.8"
   },
