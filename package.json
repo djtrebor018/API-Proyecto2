@@ -20,6 +20,7 @@
     "jsonwebtoken": "^9.0.3",
     "luxon": "^3.7.2",
     "mysql2": "^3.24.4",
+    "nodemailer": "^10.1.0",
     "sequelize": "^6.37.8"
   },
   "devDependencies": {

@@ -24,11 +24,10 @@ export const Contrato = conexion.define('Contrato', {
     },
     Estado: {
         type: DataTypes.ENUM('Vigente', 'Cancelado'),
-        allowNull: true,
+        allowNull: false,
         defaultValue: 'Vigente'
     }
 }, {
     tableName: 'contrato',
     timestamps: false
 });
-
