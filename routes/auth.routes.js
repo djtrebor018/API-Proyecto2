@@ -9,16 +9,19 @@ export const authRouter = Router()
 const REGEX_CORREO_UCSD = /^[a-z]+\d{8}@ucsd\.edu\.do$/i;
 authRouter.post('/login',[ 
     check('Correo').trim().notEmpty().withMessage('Debe ingresar el Correo para iniciar sesion').bail()
-    .isEmail().withMessage('no es un correo valido').bail(),
+    .isEmail().withMessage('no es un correo valido').bail()
+    .isLength({ max: 50 }).withMessage('el correo no puede superar 50 caracteres').bail(),
     check('Password').trim().notEmpty().withMessage('Debe ingresar un Password para iniciar sesion').bail()
     .isString().withMessage('el password debe ser del tipo string').bail(),
     validarCampos],Login)
 
 authRouter.post('/registro',[ check('Nombre').trim().notEmpty().withMessage('debe ingresar el Nombrre del usuario').bail()
-        .isString().withMessage('el nombre debe ser un string').bail(),
+        .isString().withMessage('el nombre debe ser un string').bail()
+        .isLength({ max: 50 }).withMessage('el nombre no puede superar 50 caracteres').bail(),
     
         check('Correo').trim().notEmpty().withMessage('debe ingresar el correo del usuario').bail()
         .isEmail().withMessage('este campo debe ser un correo valido').bail()
+        .isLength({ max: 50 }).withMessage('el correo no puede superar 50 caracteres').bail()
         .custom(verifyCorreo).bail()
         .custom(CorreoInstucional).bail(),
         
@@ -41,7 +44,13 @@ check('Cedula')
     .if(check('Tipo_Usuario').equals('Externo'))
     .isString().withMessage('la cedula debe ser string').bail()
     .trim().notEmpty().withMessage('los usuarios externos deben ingresar cédula').bail()
-    .custom(VerifyCedula).bail(),   
+    .isLength({ max: 20 }).withMessage('la cédula no puede superar 20 caracteres').bail()
+    .custom(VerifyCedula).bail(),
+
+check('Rol')
+    .optional()
+    .isIn(['Usuario']).withMessage('el rol debe ser Usuario'),
  validarCampos],Registro) 
+
 
 authRouter.get('',validarJWT,Auth)

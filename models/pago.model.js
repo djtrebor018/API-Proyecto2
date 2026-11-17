@@ -14,22 +14,21 @@ export const Pago = conexion.define('Pago', {
         references: { model: Inscripcion, key: 'ID_Inscripcion' }
     },
     Metodo_Pago: {
-        type: DataTypes.ENUM('Efectivo', 'Paypal', 'Tarjeta'),
+        type: DataTypes.ENUM('Efectivo', 'Paypal', 'Tarjeta', 'Transferencia'),
         allowNull: false,
         defaultValue: 'Efectivo'
-    },
-    Monto: {
-        type: DataTypes.DECIMAL(10, 2),
-        allowNull: false,
-        get() {
-            const valor = this.getDataValue('Monto');
-            return valor === null ? null : parseFloat(valor);
-        }
     },
      Motivo_Pago: {
         type: DataTypes.ENUM('Inscripción', 'Mensual'),
         allowNull: false,
+       
     },
+    Monto: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+
+    },
+    
     Fecha_Pago: {
         type: DataTypes.DATEONLY,
         allowNull: true
@@ -39,10 +38,6 @@ export const Pago = conexion.define('Pago', {
         allowNull: false,
         defaultValue: 'Pendiente'
     },
-    Referencia: {
-        type: DataTypes.STRING(100),
-        allowNull: true
-    }
 }, {
     tableName: 'pago',
     timestamps: false

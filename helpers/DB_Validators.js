@@ -34,7 +34,7 @@ export const VerifyCedula=async(Cedula = '')=>{
     })
 
     if(foundUser){
-        throw new Error(` ya existe un usuario con esta matricula`)
+        throw new Error(` ya existe un usuario con esta cedula`)
     }
 
 }

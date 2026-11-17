@@ -2,6 +2,7 @@ import { request, response } from "express";
 import { Jwt } from "../helpers/jwt.js";
 import { Usuario } from "../models/usuario.model.js";
 import bcrypt from "bcryptjs";
+import { enviarCorreoBienvenida } from "../helpers/mailer.js";
 
 export const Login = async (req = request, res = response) => {
     const { Correo ,Password} = req.body
@@ -46,12 +47,24 @@ export const Registro =async(req = request , res =response)=>{
           const matriculaFinal = Matricula?.trim() || null;
           const cedulaFinal = Cedula?.trim() || null;
     try {
-       const newUser = await Usuario.create({ Nombre,Correo,Password:hashPassword,Tipo_Usuario,Matricula:matriculaFinal,Cedula:cedulaFinal,Rol})
+       const newUser = await Usuario.create({
+        Nombre,
+        Correo,
+        Password: hashPassword,
+        Tipo_Usuario,
+        Matricula: matriculaFinal,
+        Cedula: cedulaFinal,
+        Rol: Rol ?? 'Usuario'
+       })
        const token = Jwt(newUser.ID_Usuario)
+        enviarCorreoBienvenida({ Nombre, Correo }).catch((err) =>
+      console.error("Error enviando correo de bienvenida:", err.message)
+    );
        res.status(201).json({ 
             msg:'registro exitoso',
             token
         })
+         
     } catch (error) {
         console.error(error)
        console.error(error.message) 
